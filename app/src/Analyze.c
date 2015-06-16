@@ -28,6 +28,7 @@ static void add_input_blocks(int file_index){
 //打开文件计算文件行数，设置区块以及输入
 static int open_input_file(char *file_name)
 {
+	if((access(file_name,F_OK))==-1) return -1;
 	InputFile *f;
 	GROW_ARRAY(input_files, nb_input_files);
 	f = m_mallocz(sizeof(*f));
