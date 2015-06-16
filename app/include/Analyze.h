@@ -20,7 +20,6 @@ typedef struct InputBlock {
 	int file_index;
 	int start_line;//起始行
 	int end_line;//终止行
-	uint64_t start;
 } InputBlock;
 typedef struct Config{
 	struct read_ini *ini_r;
