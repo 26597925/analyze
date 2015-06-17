@@ -6,21 +6,16 @@
 #include <stdio.h>
 #include <inttypes.h>
 #include <math.h>
+#include <time.h>
 
 #include "IniParser.h"
 #include "Util.h"
 #include "File.h"
 
-typedef struct InputFile {
-	char *file_name;//文件名称
-	u_long line;//总行数
-	int block;//多少个区块,每个区块分为一个输入流
-} InputFile;
-typedef struct InputBlock {
-	int file_index;
-	int start_line;//起始行
-	int end_line;//终止行
-} InputBlock;
+#define	 BIGSIZE 	 32212254720
+#define	 MEDIUMSIZE  10737418240
+#define  SMALLSIZE   1073741824
+
 typedef struct Config{
 	struct read_ini *ini_r;
 	struct ini *ini;

@@ -46,6 +46,11 @@ char *str_split(char **stringp, const char *delim)
     }
 }
 
+char *parse_key(const char *s)
+{
+	return NULL;
+}
+
 void *grow_array(void *array, int elem_size, int *size, int new_size)
 {
     if (new_size >= INT_MAX / elem_size) {

@@ -36,8 +36,13 @@ static int open_input_file(char *file_name)
         return -1;
 	int index = nb_input_files - 1;
 	input_files[index] = f;
-	f->file_name = file_name;
-	f->line = file_line(file_name);
+	file_init(f, file_name);
+	if(f->size >= BIGSIZE){
+		f->is_mmap = 1;
+		f->line = file_mmap_line(f);
+	}else{
+		f->line = file_by_line(f);
+	}
 	f->block = ceil(f->line/(float)config->block_line);
 	add_input_blocks(index);
 	return 1;
@@ -58,12 +63,18 @@ static void parse_config(){
 	value = ini_get_value(config->ini, "apache", "formart");
 	config->apache_formart = value;
 }
+static void call_line(u_char *buffer){
+	//printf("buffer:%s/n", buffer);
+}
 
 int main(int argc, char **argv)
 {
+	clock_t start, finish;
+	double duration;
 	int ret, i;
 	char *split = ",";
 	ret = 1;
+	start = clock();
 	parse_config();
 	char *file_name;
     while((file_name = str_split( &config->file_name, split)))
@@ -74,13 +85,13 @@ int main(int argc, char **argv)
 	for(i =0; i< nb_input_files; i++){
 		printf("filename:%s \n", input_files[i]->file_name);
 		printf("line:%ld \n", input_files[i]->line);
-		printf("block:%d \n", input_files[i]->block);
+		printf("size:%ld \n", input_files[i]->size);
+		parse_by_line(input_files[i], call_line);
+		destroy_file(input_files[i]);
 	}
-	for(i =0; i< nb_input_blocks; i++){
-		printf("fileindex:%d \n", input_blocks[i]->file_index);
-		printf("start_line:%d \n", input_blocks[i]->start_line);
-		printf("end_line:%d \n", input_blocks[i]->end_line);
-	}
+	finish = clock();
+	duration = (double)(finish - start) / CLOCKS_PER_SEC;
+	printf( "%f seconds\n", duration );
 	destroy_ini(config->ini);
     cleanup_readini(config->ini_r);
 	return 0;
