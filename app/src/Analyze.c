@@ -63,9 +63,9 @@ static void parse_config(){
 	value = ini_get_value(config->ini, "apache", "formart");
 	config->apache_formart = value;
 }
-static void call_line(u_char *buffer){
-	//printf("buffer:%s/n", buffer);
-}
+/*static void call_line(u_char *buffer){
+	printf("buffer:%s/n", buffer);
+}*/
 
 int main(int argc, char **argv)
 {
@@ -77,18 +77,24 @@ int main(int argc, char **argv)
 	start = clock();
 	parse_config();
 	char *file_name;
+	InputFile *f;
     while((file_name = str_split( &config->file_name, split)))
 	{
 		open_input_file(file_name);
 	}
-	printf("nb_input_files:%d \n", nb_input_files);
+	for(i =0; i< nb_input_blocks; i++){
+		printf("file_index:%d \n", input_blocks[i]->file_index);
+		f = input_files[input_blocks[i]->file_index];
+		parse_line_block(f, input_blocks[i]);
+	}
+	/*printf("nb_input_files:%d \n", nb_input_files);
 	for(i =0; i< nb_input_files; i++){
 		printf("filename:%s \n", input_files[i]->file_name);
 		printf("line:%ld \n", input_files[i]->line);
 		printf("size:%ld \n", input_files[i]->size);
-		parse_by_line(input_files[i], call_line);
+		//parse_line_block(input_files[i], call_line);
 		destroy_file(input_files[i]);
-	}
+	}*/
 	finish = clock();
 	duration = (double)(finish - start) / CLOCKS_PER_SEC;
 	printf( "%f seconds\n", duration );

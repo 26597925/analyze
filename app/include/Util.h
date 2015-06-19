@@ -12,6 +12,7 @@
 void exit_program(int ret);
 char *str_split(char **stringp, const char *delim);
 char *str_dup(const char *s);
+char *str_char(char *dest, char src);
 char *parse_key(const char *s);
 void *grow_array(void *array, int elem_size, int *size, int new_size);
 #define GROW_ARRAY(array, nb_elems)\

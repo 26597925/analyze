@@ -13,6 +13,7 @@
 #include <sys/mman.h>
 
 #include "DefType.h"
+#include "Util.h"
 #define MAXBSIZE 65536
 
 typedef struct InputFile {
@@ -30,6 +31,8 @@ typedef struct InputBlock {
 	int file_index;
 	long start_line;//起始行
 	long end_line;//终止行
+	
+	u_char *content;
 } InputBlock;
 
 int file_init(InputFile *f, char *file);
@@ -38,6 +41,6 @@ u_long file_by_line(InputFile *f);
 
 u_long file_mmap_line(InputFile *f);
 
-void parse_by_line(InputFile *f, void (*callline)(u_char *));
+void parse_line_block(InputFile *f, InputBlock *b);
 
 void destroy_file(InputFile *f);
