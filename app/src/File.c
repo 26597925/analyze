@@ -42,8 +42,6 @@ u_long file_by_line(InputFile *f)
 	if(!gotsp){
 		++linect;
 	}
-	//重新启用还是需要重新设置，所以直接释放
-	close(f->fd);
     return linect;  
 }
 //用内存映射防止内核重复复制带来的io消耗
@@ -70,34 +68,6 @@ u_long file_mmap_line(InputFile *f)
 		++linect;
 	}
 	return linect;
-}
-
-//单行读取
-void parse_line_block(InputFile *f, InputBlock *b){
-	register u_char *p;
-	register int ch, len;
-	register short gotsp;
-    u_char buf[MAXBSIZE];
-	ch = 0;
-	gotsp = 1;
-	//已经使用需要重新设置文件标识符
-	f->fd = open(f->file_name, O_RDONLY, 0);
-	while (f->fd && (len = read(f->fd, buf, MAXBSIZE)) > 0) {
-		for (p = buf; len--;) {  
-			ch = *p++;  
-			if (ch == '\n'){
-				
-			}
-		}
-		if (isspace(ch))
-			gotsp = 1;  
-		else if (gotsp) {  
-			gotsp = 0;
-		}
-		if(!gotsp){
-			
-		}
-	}
 }
 
 //mmap内存映射读取

@@ -20,12 +20,9 @@ typedef struct Config{
 	struct read_ini *ini_r;
 	struct ini *ini;
 	char *file_name;
-	int block_line;
 	char *nginx_formart;
 	char *apache_formart;
 } Config;
 
 extern InputFile  	**input_files;
 extern int        	nb_input_files;
-extern InputBlock **input_blocks;
-extern int        nb_input_blocks;
